@@ -10,28 +10,30 @@ export default new Vuex.Store({
       index: '',
       value: '',
     },
-    showModal: false,
+    idx: '',
+    saveModal: false,
     editModal: false,
     delModal: false,
   },
   getters: {
+    getIdx: (state) => state.idx,
     getTodoItem: (state) => state.todoItems,
     getEditItem: (state) => state.editTodoObj,
-    getshowModal: (state) => state.getshowModal,
-    geteditModal: (state) => state.getshowModal,
-    getdelModal: (state) => state.getshowModal,
+    getEditModal: (state) => state.editModal,
+    getSaveModal: (state) => state.saveModal,
   },
   mutations: {
-    showModal: (state, payload) => {
-
+    setEditModal: (state, payload) => {
+      state.editModal = payload;
     },
-    editModal: (state, payload) => {
-
+    setSaveModal: (state, payload) => {
+      state.saveModal = payload;
+      console.debug(payload);
     },
-    delModal: (state, payload) => {
-
+    setIdx: (state, payload) => {
+      state.idx = payload;
+      console.debug(payload);
     },
-
     checkArr: (state, payload) => {
       state.editTodoObj = payload;
       console.debug(state.editTodoObj);
@@ -49,8 +51,13 @@ export default new Vuex.Store({
       localStorage.setItem('vue-todo', JSON.stringify(state.todoItems));
     },
     editTodo: (state, payload) => {
-      state.todoItems[payload.index] = payload;
-      // state.todoItems.splice(payload.objIndex, 1, item);
+      const item = {
+        key: payload.key,
+        value: payload.value,
+        date: payload.date,
+      };
+      // state.todoItems[payload.index] = item;
+      state.todoItems.splice(payload.index, 1, item);
       localStorage.setItem('vue-todo', JSON.stringify(state.todoItems));
     },
   },
@@ -60,5 +67,8 @@ export default new Vuex.Store({
     actionRemoveTodo: (context, payload) => context.commit('removeTodo', payload),
     actionEditTodo: (context, payload) => context.commit('editTodo', payload),
     actionCheckArr: (context, payload) => context.commit('checkArr', payload),
+    actionSetEditModal: (context, payload) => context.commit('setEditModal', payload),
+    actionSetSaveModal: (context, payload) => context.commit('setSaveModal', payload),
+    actionSetIdx: (context, payload) => context.commit('setIdx', payload),
   },
 });
