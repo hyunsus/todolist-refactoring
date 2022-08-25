@@ -25,12 +25,15 @@
 
 <script>
 import moment from 'moment';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Modal from './common/Modal.vue';
 
 export default {
   components: {
     Modal,
+  },
+  computed: {
+    ...mapGetters(['getNewTodoItem']),
   },
   data() {
     return {

@@ -10,7 +10,7 @@
           <input
             type="radio"
             name="aa"
-            v-model ="idx"
+            v-model ="valueIndex"
             :value ="index"
           />{{ value }}&nbsp;&nbsp;
         </div>
@@ -36,11 +36,30 @@
         </span>
       </li>
     </transition-group>
-
-    <button @click='checkArr()'>수정</button>
-    <!--
-    <button @click='removeArr()'>삭제</button>
-    -->
+    <modal v-if="editModal" @close="editModal = false">
+      <h3 slot="header">수정하기</h3>
+      <span slot="footer">
+        수정할 내용을 작성해주세요
+        <input
+          type="text"
+          v-model="getEditItem.value"
+          onfocus="this.select()"
+          @keypress.enter="editTodoAction()"
+        />&nbsp;
+        <span
+          class="fixBtn"
+          type="button"
+          @click="editTodoAction()"
+        >
+          <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+        </span>
+        <i
+          class="close-modal-btn fa fa-times"
+          aria-hidden="true"
+          @click="editModal = false"
+        ></i>
+      </span>
+    </modal>
   </section>
 </template>
 
@@ -50,7 +69,9 @@ import { mapGetters, mapActions } from 'vuex';
 import Modal from './common/Modal.vue';
 
 export default {
-
+  components: {
+    Modal,
+  },
   data() {
     return {
       editModal: false,
@@ -58,10 +79,19 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getTodoItem', 'getEditItem']),
+    ...mapGetters(['getTodoItem', 'getEditItem', 'getIdx']),
+
+    valueIndex: {
+      get() {
+        return this.getIdx;
+      },
+      set(val) {
+        this.actionSetIdx(val);
+      },
+    },
   },
   methods: {
-    ...mapActions(['actionRemoveTodo', 'actionEditTodo', 'actionCheckArr']),
+    ...mapActions(['actionRemoveTodo', 'actionEditTodo', 'actionCheckArr', 'actionSetIdx']),
     checkArr() {
       const index = this.idx;
       const value = this.getTodoItem[this.idx].value;

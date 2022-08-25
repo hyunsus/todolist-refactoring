@@ -15,7 +15,7 @@
         <i
           class="close-modal-btn fa fa-times"
           aria-hidden="true"
-          @click="editModal = false"
+          @click="clearModal = false"
         ></i>
       </span>
     </modal>
