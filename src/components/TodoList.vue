@@ -80,7 +80,6 @@ export default {
   },
   computed: {
     ...mapGetters(['getTodoItem', 'getEditItem', 'getIdx']),
-
     valueIndex: {
       get() {
         return this.getIdx;
@@ -92,19 +91,6 @@ export default {
   },
   methods: {
     ...mapActions(['actionRemoveTodo', 'actionEditTodo', 'actionCheckArr', 'actionSetIdx']),
-    checkArr() {
-      const index = this.idx;
-      const value = this.getTodoItem[this.idx].value;
-      const key = this.getTodoItem[this.idx].key;
-      console.debug(index);
-      this.actionCheckArr({ index, value, key });
-      this.editModal = !this.editModal;
-    },
-    removeArr() {
-      const index = this.idx;
-      const key = this.getTodoItem[this.idx].key;
-      this.actionRemoveTodo({ key, index });
-    },
     removeTodo(key, index) {
       this.actionRemoveTodo({ key, index });
     },
@@ -130,7 +116,6 @@ export default {
       this.editModal = false;
     },
   },
-
 };
 </script>
 

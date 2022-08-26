@@ -1,6 +1,6 @@
 <template>
   <div class="clear-all-container">
-    <span class="clear-all-btn" @click="showModal">모든 일정 삭제</span>
+    <span class="clear-all-btn" @click="clearModal=true">모든 일정 삭제</span>
     <modal v-if="clearModal" @close="clearModal = false">
       <h3 slot="header">경고</h3>
       <span slot="footer" @click="clearModal = false">
@@ -36,13 +36,10 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['actionRemoveAllOfParents']),
+    ...mapActions(['actionRemoveAll']),
 
     clearTodo() {
-      this.actionRemoveAllOfParents();
-    },
-    showModal() {
-      this.clearModal = !this.clearModal;
+      this.actionRemoveAll();
     },
   },
 };
