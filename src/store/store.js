@@ -13,7 +13,7 @@ export default new Vuex.Store({
     idx: '',
     saveModal: false,
     editModal: false,
-    delModal: false,
+    warnModal: false,
   },
   getters: {
     getIdx: (state) => state.idx,
@@ -21,6 +21,7 @@ export default new Vuex.Store({
     getEditItem: (state) => state.editTodoObj,
     getEditModal: (state) => state.editModal,
     getSaveModal: (state) => state.saveModal,
+    getWarnModal: (state) => state.warnModal,
   },
   mutations: {
     setEditModal: (state, payload) => {
@@ -28,6 +29,10 @@ export default new Vuex.Store({
     },
     setSaveModal: (state, payload) => {
       state.saveModal = payload;
+      console.debug(payload);
+    },
+    setWarnModal: (state, payload) => {
+      state.warnModal = payload;
       console.debug(payload);
     },
     setIdx: (state, payload) => {
@@ -70,5 +75,6 @@ export default new Vuex.Store({
     actionSetEditModal: (context, payload) => context.commit('setEditModal', payload),
     actionSetSaveModal: (context, payload) => context.commit('setSaveModal', payload),
     actionSetIdx: (context, payload) => context.commit('setIdx', payload),
+    actionSetWarnModal: (context, payload) => context.commit('setWarnModal', payload),
   },
 });

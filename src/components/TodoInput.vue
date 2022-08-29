@@ -9,6 +9,7 @@
     <span class="add-container" @click="addTodo">
       <i class="add-btn fa fa-plus" aria-hidden="true"></i>
     </span>
+    <!-- 해야할 일을 입력하지 않았을 때 띄워지는 모달 -->
     <modal v-if="showModal" @close="showModal = false">
       <h3 slot="header">경고</h3>
       <span slot="footer">
@@ -43,6 +44,9 @@ export default {
   },
   methods: {
     ...mapActions(['actionAddTodo']),
+    /**
+     * input창을 이용한 할 일 등록
+     */
     addTodo() {
       if (this.newTodoItem !== '' && this.newTodoItem) {
         const value = this.newTodoItem.trim();

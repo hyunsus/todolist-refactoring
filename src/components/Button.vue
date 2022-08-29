@@ -1,21 +1,45 @@
 <template>
   <div class="menus">
-    <label class="menu" for="menu">편집</label>
+    <!-- 라벨을 이용하여 버튼 hidden 시키기 -->
+    <label
+      class="menu"
+      for ="menu"
+    >
+      편집
+    </label>
     <input id="menu" type="checkbox">
-    <nav id="main-nav">
-      <ul>
-        <li>
-          <button
-            class="custom-btn btn-1"
-            @click='actionSetSaveModal(true)'
-          >
-            등록
-          </button>
-        </li><li><button class="custom-btn btn-2" @click='checkModal'>수정</button></li>
-        <li><button class="custom-btn btn-4" @click="removeTodo()">삭제</button></li>
-      </ul>
-    </nav>
-
+    <div id = "main-nav">
+      <nav id="main">
+        <ul>
+          <li>
+            <!-- 등록 버튼 -->
+            <button
+              class="custom-btn btn-1"
+              @click='actionSetSaveModal(true)'
+            >
+              등록
+            </button>
+          </li>
+          <!-- 수정 버튼 -->
+          <li><button class="custom-btn btn-2" @click='checkModal'>수정</button></li>
+          <!-- 삭제 버튼 -->
+          <li><button class="custom-btn btn-4" @click="removeTodo">삭제</button></li>
+        </ul>
+      </nav>
+    </div>
+    <!-- 경고 모달 -->
+    <modal v-if="getWarnModal" @close="actionSetWarnModal(false)">
+      <h3 slot="header">경고</h3>
+      <span slot="footer">
+        할 일을 체크해주세요!
+        <i
+          class="close-modal-btn fa fa-times"
+          aria-hidden="true"
+          @click="actionSetWarnModal(false)"
+        ></i>
+      </span>
+    </modal>
+    <!-- 수정 모달 -->
     <modal v-if="getEditModal" @close="actionSetEditModal(false)">
       <h3 slot="header">수정하기</h3>
       <span slot="footer">
@@ -40,7 +64,7 @@
         ></i>
       </span>
     </modal>
-
+    <!-- 등록 모달 -->
     <modal v-if="getSaveModal" @close="actionSetSaveModal(false)">
       <h3 slot="header">등록하기</h3>
       <span slot="footer">
@@ -78,7 +102,8 @@ export default {
     Modal,
   },
   computed: {
-    ...mapGetters(['getTodoItem', 'getIdx', 'getEditModal', 'getDelModal', 'getEditItem', 'getSaveModal', 'getTodoItem']),
+    ...mapGetters(['getIdx', 'getEditModal', 'getEditItem', 'getSaveModal', 'getTodoItem', 'getWarnModal']),
+    // editmodal setter
     valueShowEditModal: {
       get() {
         return this.getEditModal;
@@ -87,12 +112,22 @@ export default {
         this.actionSetEditModal(val);
       },
     },
+    // savemodal setter
     valueShowSaveModal: {
       get() {
         return this.getSaveModal;
       },
       set(val) {
         this.actionSetSaveModal(val);
+      },
+    },
+    // warnmodal setter
+    valueShowWarnModal: {
+      get() {
+        return this.getWarnModal;
+      },
+      set(val) {
+        this.actionSetWarnModal(val);
       },
     },
   },
@@ -102,14 +137,20 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['actionRemoveTodo', 'actionSetEditModal', 'actionSetSaveModal', 'actionAddTodo', 'actionEditTodo']),
+    ...mapActions(['actionSetWarnModal', 'actionRemoveTodo', 'actionSetEditModal', 'actionSetSaveModal', 'actionAddTodo', 'actionEditTodo']),
+    /**
+     * 수정 버튼을 클릭했을 때 index값 체크해서 모달 띄우기
+     */
     checkModal() {
       if (this.getIdx === '') {
-        console.debug('다시');
+        this.actionSetWarnModal(true);
       } else {
         this.actionSetEditModal(true);
       }
     },
+    /**
+     * 등록 버튼을 눌렀을 때 값 전달
+     */
     addTodo() {
       if (this.newTodoItem !== '' && this.newTodoItem) {
         const value = this.newTodoItem.trim();
@@ -128,15 +169,21 @@ export default {
     clearInput() {
       this.newTodoItem = '';
     },
+    /**
+     * 삭제 버튼을 눌렀을 때 값 전달
+     */
     removeTodo() {
       const index = this.getIdx;
       const key = this.getTodoItem[this.getIdx];
       if (index === '') {
-        console.log('삭제불가');
+        this.actionSetWarnModal(true);
       } else {
         this.actionRemoveTodo({ key, index });
       }
     },
+    /**
+     * 수정아이콘을 눌렀을 때 값 전달
+     */
     editTodoAction() {
       const objDate = moment();
       const formatdate = objDate.format('YYYY.MM.DD HH:mm:ss');
@@ -160,16 +207,18 @@ export default {
 <style scoped>
 label.menu{
   border: 1px solid black;
-  padding: 4px;
+  float: right;
 }
 input#menu{
-  display: none;
+  visibility:hidden;
+  width: 0px;
 }
-nav#main-nav{
-  display:none;
+div#main-nav{
+  visibility:hidden;
+  padding: 4px;
 }
-input#menu:checked + nav#main-nav{
-  display: block;
+input#menu:checked + div#main-nav{
+  visibility:visible;
 }
 .menus{
   float:right;

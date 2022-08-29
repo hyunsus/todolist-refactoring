@@ -1,6 +1,7 @@
 <template>
   <section>
     <transition-group name="list" tag="ul">
+      <!-- v-for을 이용하여 리스트 띄우기 -->
       <li
         v-for="({ key, value, date }, index) in getTodoItem"
         :key="key"
@@ -14,72 +15,23 @@
             :value ="index"
           />{{ value }}&nbsp;&nbsp;
         </div>
-
-        <!--
-        <i class="check-btn fa fa-check" aria-hidden="true"></i>
-        {{ value }}&nbsp;&nbsp;
-        -->
         <span class="text-muted"> {{ date }}</span>
-        <span
-          class="edit-btn"
-          type="button"
-          @click="editTodo(key, index, value)"
-        >
-          <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-        </span>
-        <span
-          class="remove-btn"
-          type="button"
-          @click="removeTodo(key, index)"
-        >
-          <i class="fa fa-trash" aria-hidden="true"></i>
-        </span>
       </li>
     </transition-group>
-    <modal v-if="editModal" @close="editModal = false">
-      <h3 slot="header">수정하기</h3>
-      <span slot="footer">
-        수정할 내용을 작성해주세요
-        <input
-          type="text"
-          v-model="getEditItem.value"
-          onfocus="this.select()"
-          @keypress.enter="editTodoAction()"
-        />&nbsp;
-        <span
-          class="fixBtn"
-          type="button"
-          @click="editTodoAction()"
-        >
-          <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-        </span>
-        <i
-          class="close-modal-btn fa fa-times"
-          aria-hidden="true"
-          @click="editModal = false"
-        ></i>
-      </span>
-    </modal>
   </section>
 </template>
 
 <script>
-import moment from 'moment';
 import { mapGetters, mapActions } from 'vuex';
-import Modal from './common/Modal.vue';
 
 export default {
-  components: {
-    Modal,
-  },
   data() {
     return {
-      editModal: false,
-      idx: '',
     };
   },
   computed: {
     ...mapGetters(['getTodoItem', 'getEditItem', 'getIdx']),
+    // index setter
     valueIndex: {
       get() {
         return this.getIdx;
@@ -91,30 +43,6 @@ export default {
   },
   methods: {
     ...mapActions(['actionRemoveTodo', 'actionEditTodo', 'actionCheckArr', 'actionSetIdx']),
-    removeTodo(key, index) {
-      this.actionRemoveTodo({ key, index });
-    },
-    editTodo(key, index, value) {
-      this.getEditItem.index = index;
-      this.getEditItem.value = value;
-      this.getEditItem.key = key;
-      this.editModal = !this.editModal;
-    },
-    editTodoAction() {
-      const objDate = moment();
-      const formatdate = objDate.format('YYYY.MM.DD HH:mm:ss');
-      const date = formatdate;
-      const index = this.getEditItem.index;
-      const key = this.getEditItem.key;
-      const value = this.getEditItem.value;
-      this.actionEditTodo({
-        index,
-        key,
-        date,
-        value,
-      });
-      this.editModal = false;
-    },
   },
 };
 </script>
