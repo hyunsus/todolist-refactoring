@@ -11,6 +11,8 @@
     <div id = "main-nav">
       <nav id="main">
         <ul>
+          <!-- 완료 버튼 -->
+          <li><button class="custom-btn btn-6">완료</button></li>
           <li>
             <!-- 등록 버튼 -->
             <button
@@ -68,13 +70,19 @@
     <modal v-if="getSaveModal" @close="actionSetSaveModal(false)">
       <h3 slot="header">등록하기</h3>
       <span slot="footer">
-        등록할 내용을 작성해주세요
+        할 일을 작성해주세요 &nbsp;
         <input
           type="text"
           v-model="newTodoItem"
           onfocus="this.select()"
           @keypress.enter="addTodo()"
         />&nbsp;
+        <select v-model="newCategory" >
+          <option value="취미">취미</option>
+          <option value="운동">운동</option>
+          <option value="기타">기타</option>
+        </select>
+        <p></p>
         <span
           class="fixBtn"
           type="button"
@@ -134,6 +142,7 @@ export default {
   data() {
     return {
       newTodoItem: '',
+      newCategory: '',
     };
   },
   methods: {
@@ -157,10 +166,12 @@ export default {
         const date1 = moment();
         const date = date1.format('YYYY.MM.DD HH:mm:ss');
         const key = `key${date1}`;
+        const category = this.newCategory.trim();
         this.actionAddTodo({
           key,
           value,
           date,
+          category,
         });
         this.clearInput();
       }
@@ -362,4 +373,83 @@ background: linear-gradient(0deg, rgba(0,3,255,1) 0%, rgba(2,126,251,1) 100%);
     inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
 }
 
+/* 6 */
+.btn-6 {
+  background: rgb(247,150,192);
+background: radial-gradient(circle, rgba(247,150,192,1) 0%, rgba(118,174,241,1) 100%);
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+.btn-6 span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.btn-6:before,
+.btn-6:after {
+  position: absolute;
+  content: "";
+  height: 0%;
+  width: 1px;
+ box-shadow:
+   -1px -1px 20px 0px rgba(255,255,255,1),
+   -4px -4px 5px 0px rgba(255,255,255,1),
+   7px 7px 20px 0px rgba(0,0,0,.4),
+   4px 4px 5px 0px rgba(0,0,0,.3);
+}
+.btn-6:before {
+  right: 0;
+  top: 0;
+  transition: all 500ms ease;
+}
+.btn-6:after {
+  left: 0;
+  bottom: 0;
+  transition: all 500ms ease;
+}
+.btn-6:hover{
+  background: transparent;
+  color: #76aef1;
+  box-shadow: none;
+}
+.btn-6:hover:before {
+  transition: all 500ms ease;
+  height: 100%;
+}
+.btn-6:hover:after {
+  transition: all 500ms ease;
+  height: 100%;
+}
+.btn-6 span:before,
+.btn-6 span:after {
+  position: absolute;
+  content: "";
+  box-shadow:
+   -1px -1px 20px 0px rgba(255,255,255,1),
+   -4px -4px 5px 0px rgba(255,255,255,1),
+   7px 7px 20px 0px rgba(0,0,0,.4),
+   4px 4px 5px 0px rgba(0,0,0,.3);
+}
+.btn-6 span:before {
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: .5px;
+  transition: all 500ms ease;
+}
+.btn-6 span:after {
+  right: 0;
+  bottom: 0;
+  width: 0%;
+  height: .5px;
+  transition: all 500ms ease;
+}
+.btn-6 span:hover:before {
+  width: 100%;
+}
+.btn-6 span:hover:after {
+  width: 100%;
+}
 </style>

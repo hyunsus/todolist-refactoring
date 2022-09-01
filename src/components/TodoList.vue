@@ -3,7 +3,7 @@
     <transition-group name="list" tag="ul">
       <!-- v-for을 이용하여 리스트 띄우기 -->
       <li
-        v-for="({ key, value, date }, index) in getTodoItem"
+        v-for="({ key, value, date, category }, index) in getTodoItem"
         :key="key"
         class="shadow"
       >
@@ -13,7 +13,7 @@
             name="aa"
             v-model ="valueIndex"
             :value ="index"
-          />{{ value }}&nbsp;&nbsp;
+          />({{ category }})&nbsp;&nbsp; {{ value }}&nbsp;&nbsp;
         </div>
         <span class="text-muted"> {{ date }}</span>
       </li>
@@ -30,7 +30,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getTodoItem', 'getEditItem', 'getIdx']),
+    ...mapGetters(['getTodoItem', 'getIdx']),
     // index setter
     valueIndex: {
       get() {
@@ -42,7 +42,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['actionRemoveTodo', 'actionEditTodo', 'actionCheckArr', 'actionSetIdx']),
+    ...mapActions(['actionSetIdx']),
   },
 };
 </script>

@@ -38,7 +38,9 @@ export default {
   },
   methods: {
     ...mapActions(['actionRemoveAllOfParents']),
-
+    /**
+     * 전체 삭제 로직
+     */
     clearTodo() {
       this.actionRemoveAllOfParents();
     },

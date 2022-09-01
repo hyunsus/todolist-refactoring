@@ -5,16 +5,18 @@
     <TodoList></TodoList>
     <Button></Button>
     <TodoFooter></TodoFooter>
+    <Chart></Chart>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import TodoHeader from './components/TodoHeader.vue';
 import TodoInput from './components/TodoInput.vue';
 import TodoList from './components/TodoList.vue';
 import TodoFooter from './components/TodoFooter.vue';
 import Button from './components/Button.vue';
-import store from './store/store';
+import Chart from './components/Chart.vue';
 
 export default {
   components: {
@@ -23,12 +25,13 @@ export default {
     TodoList,
     TodoFooter,
     Button,
+    Chart,
   },
   created() {
-    if (localStorage.getItem('vue-todo')) {
-      store.state.todoItems = JSON.parse(localStorage.getItem('vue-todo'));
-      store.state.todoItems.sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
-    }
+    this.actionDataInit();
+  },
+  methods: {
+    ...mapActions(['actionDataInit']),
   },
 };
 </script>
