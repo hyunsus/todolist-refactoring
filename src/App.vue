@@ -29,9 +29,10 @@ export default {
   },
   created() {
     this.actionDataInit();
+    this.actionReCalculate();
   },
   methods: {
-    ...mapActions(['actionDataInit']),
+    ...mapActions(['actionDataInit', 'actionReCalculate']),
   },
 };
 </script>

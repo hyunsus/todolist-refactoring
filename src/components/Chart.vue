@@ -1,6 +1,11 @@
 <template>
   <div>
-    <canvas ref="myChart"></canvas>
+    <canvas
+      class = "myChart"
+      ref="myChart"
+      width="600"
+      height="150"
+    ></canvas>
   </div>
 </template>
 <script>
@@ -14,7 +19,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getExerciseCategory', 'getHobbyCategory', 'getEtcCategory']),
+    ...mapGetters(['getHobbySum', 'getExerciseSum', 'getEtcSum']),
   },
   /**
    * 차트 지우기
@@ -41,7 +46,7 @@ export default {
             datasets: [
               { // 첫 번째 데이터셋
                 label: 'Number of Moons',
-                data: [this.getExerciseCategory, this.getHobbyCategory, this.getEtcCategory],
+                data: [this.getExerciseSum, this.getHobbySum, this.getEtcSum],
                 backgroundColor: [
                   'rgb(144,238,144)',
                   'rgb(135,206,250)',
@@ -61,7 +66,7 @@ export default {
     },
   },
   watch: {
-    getExerciseCategory(newVal) {
+    getExerciseSum(newVal) {
       console.log(this.myChart);
       if (this.myChart) {
         this.myChart.data.datasets[0].data[0] = newVal;
@@ -70,7 +75,7 @@ export default {
         console.error('Chart is undefined');
       }
     },
-    getHobbyCategory(newVal) {
+    getHobbySum(newVal) {
       if (this.myChart) {
         this.myChart.data.datasets[0].data[1] = newVal;
         this.myChart.update();
@@ -78,7 +83,7 @@ export default {
         console.error('Chart is undefined');
       }
     },
-    getEtcCategory(newVal) {
+    getEtcSum(newVal) {
       if (this.myChart) {
         this.myChart.data.datasets[0].data[2] = newVal;
         this.myChart.update();

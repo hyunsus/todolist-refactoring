@@ -52,6 +52,12 @@
           onfocus="this.select()"
           @keypress.enter="editTodoAction()"
         />&nbsp;
+        <select v-model="getEditItem.category" >
+          <option value="취미">취미</option>
+          <option value="운동">운동</option>
+          <option value="기타">기타</option>
+        </select>
+        <p></p>
         <span
           class="fixBtn"
           type="button"
@@ -146,7 +152,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['actionSetWarnModal', 'actionRemoveTodo', 'actionSetEditModal', 'actionSetSaveModal', 'actionAddTodo', 'actionEditTodo']),
+    ...mapActions(['actionReCalculate', 'actionSetWarnModal', 'actionRemoveTodo', 'actionSetEditModal', 'actionSetSaveModal', 'actionAddTodo', 'actionEditTodo']),
     /**
      * 수정 버튼을 클릭했을 때 index값 체크해서 모달 띄우기
      */
@@ -176,6 +182,7 @@ export default {
         this.clearInput();
       }
       this.actionSetSaveModal(false);
+      this.actionReCalculate();
     },
     clearInput() {
       this.newTodoItem = '';
@@ -191,6 +198,7 @@ export default {
       } else {
         this.actionRemoveTodo({ key, index });
       }
+      this.actionReCalculate();
     },
     /**
      * 수정아이콘을 눌렀을 때 값 전달
@@ -202,14 +210,17 @@ export default {
       const index = this.getIdx;
       const key = this.getTodoItem[this.getIdx].key;
       const value = this.getEditItem.value;
+      const category = this.getEditItem.category;
       this.actionEditTodo({
         index,
         key,
         date,
         value,
+        category,
       });
       this.getEditItem.value = '';
       this.actionSetEditModal(false);
+      this.actionReCalculate();
     },
   },
 };

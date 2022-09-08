@@ -37,12 +37,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['actionRemoveAllOfParents']),
+    ...mapActions(['actionRemoveAll', 'actionReCalculate']),
     /**
      * 전체 삭제 로직
      */
     clearTodo() {
-      this.actionRemoveAllOfParents();
+      this.actionRemoveAll();
+      this.actionReCalculate();
     },
   },
 };
